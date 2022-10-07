@@ -4,9 +4,9 @@ import App from "./App";
 import { NextUIProvider } from "@nextui-org/react";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <NextUIProvider>
+  <NextUIProvider>
+    <React.StrictMode>
       <App />
-    </NextUIProvider>
-  </React.StrictMode>
+    </React.StrictMode>
+  </NextUIProvider>
 );

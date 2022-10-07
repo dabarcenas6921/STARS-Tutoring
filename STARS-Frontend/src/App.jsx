@@ -1,12 +1,12 @@
 import React from "react";
-import { Box } from "./Box.js";
 import GlobalNavbar from "./GlobalNavbar.jsx";
+import { Container } from "@nextui-org/react";
 
 function App() {
   return (
-    <Box css={{ maxW: "100%" }}>
+    <Container css={{ maxWidth: "100%" }}>
       <GlobalNavbar />
-    </Box>
+    </Container>
   );
 }
 
