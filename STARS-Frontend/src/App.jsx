@@ -4,7 +4,7 @@ import { Container } from "@nextui-org/react";
 
 function App() {
   return (
-    <Container css={{ maxWidth: "100%" }}>
+    <Container css={{ width: "100%" }}>
       <GlobalNavbar />
     </Container>
   );

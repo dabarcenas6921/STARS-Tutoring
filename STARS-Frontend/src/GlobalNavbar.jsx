@@ -4,7 +4,7 @@ import { AiOutlineStar } from "react-icons/ai";
 
 function GlobalNavbar() {
   return (
-    <Navbar variant={"sticky"}>
+    <Navbar variant="static">
       <Navbar.Brand>
         <Text b color="inherit" hideIn={"xs"}>
           FIU STARS Tutoring
