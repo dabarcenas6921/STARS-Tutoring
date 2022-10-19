@@ -11,7 +11,7 @@ app.use(express.json());
 //ROUTES
 app.use("/auth", authRoute);
 
-// health check
+//Check if the server is running.
 app.get("/", function (req, res) {
   return res.status(200).json({
     ping: "pong",
