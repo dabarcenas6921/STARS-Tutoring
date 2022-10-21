@@ -1,3 +1,7 @@
+const bcrypt = require("bcrypt");
+const db = require("../db");
+const { BCRYPT_WORK_FACTOR } = require("../config");
+
 //Creates the User models for the backend
 
 class User {
@@ -11,6 +15,7 @@ class User {
       created_at: user.created_at,
       first_name: user.first_name,
       last_name: user.last_name,
+      panther_id: user.panther_id,
     };
   }
 
@@ -37,7 +42,61 @@ class User {
     throw `Invalid email/password!`;
   }
 
-  static async register(credentials) {}
+  static async register(credentials) {
+    const requiredFields = [
+      "first_name",
+      "last_name",
+      "email",
+      "password",
+      "panther_id",
+    ];
+    //Checking that all the fields are filled when posting to the database.
+    requiredFields.forEach((field) => {
+      if (!Object.prototype.hasOwnProperty.call(credentials, field)) {
+        throw `Missing ${field} for registration!`;
+      }
+    });
+
+    //Check if there is an existing user already with this email.
+
+    const existingUser = await User.fetchUserByEmail(credentials.email);
+
+    if (existingUser) {
+      throw `User is already registered with this email!`;
+    }
+
+    const lowercasedEmail = credentials.email.toLowerCase();
+    const lowercasedFirstName = credentials.first_name.toLowerCase();
+    const lowercasedLastName = credentials.last_name.toLowerCase();
+
+    //hashing the password for the db
+    const hashedPassword = await bcrypt.hash(
+      credentials.password,
+      BCRYPT_WORK_FACTOR
+    );
+
+    //posting user info into the database
+    const result = await db.query(
+      `
+      INSERT INTO users (password, account_type, first_name, last_name, email, panther_id)
+      VALUES
+      ($1, $2, $3, $4, $5, $6)
+      RETURNING first_name, last_name, email, password, panther_id, account_type,created_at,id;
+      `,
+      [
+        hashedPassword,
+        "student",
+        lowercasedFirstName,
+        lowercasedLastName,
+        lowercasedEmail,
+        credentials.panther_id,
+      ]
+    );
+
+    const user = result.rows[0];
+
+    return User.makePublicUser(user);
+  }
 
   static async fetchUserByEmail(email) {
     if (!email) {
