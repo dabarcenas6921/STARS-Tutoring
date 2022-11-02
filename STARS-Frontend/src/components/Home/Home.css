@@ -1,0 +1,32 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.title-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.title-container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50rem;
+  top: 40px;
+  left: 40px;
+  background-color: rgb(95, 165, 189);
+}
+
+.home-title {
+  font-family: "Poor Story", cursive;
+  color: white;
+  font-size: 75px;
+  margin: 15px 10px 10px 0;
+}

@@ -1,0 +1,132 @@
+footer {
+  background: var(--oxford-blue);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 50px;
+  padding: 100px 100px 80px;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-logo {
+  margin-bottom: 25px;
+}
+
+.footer-text {
+  font-family: "Roboto", sans-serif;
+  font-size: var(--fs-6);
+  color: var(--lavender-blue);
+  margin-bottom: 35px;
+  line-height: 1.6;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.social-link a {
+  background: hsla(0, 0%, 100%, 0.1);
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  transition: var(--default-transition);
+}
+
+.social-link a:hover {
+  background: var(--red-orange-color-wheel);
+}
+
+.social-link ion-icon {
+  font-size: 20px;
+  color: var(--white);
+}
+
+.grid-item .item-heading {
+  font-size: var(--fs-4);
+  color: var(--white);
+  margin-bottom: 25px;
+}
+
+.grid-item .list-item:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.grid-item .list-item a {
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  color: var(--lavender-blue);
+  font-size: var(--fs-6);
+  transition: var(--default-transition);
+}
+
+.grid-item .list-item a:hover {
+  transform: translateX(10px);
+  color: var(--red-orange-color-wheel);
+}
+
+.grid-item .wrapper {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.grid-item .wrapper input {
+  width: 100%;
+  padding: 20px 30px;
+  padding-right: 70px;
+  color: var(--oxford-blue);
+  font-family: "Roboto", sans-serif;
+  font-size: var(--fs-6);
+  border: none;
+  outline: none;
+}
+
+.grid-item .send-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 62px;
+  height: 62px;
+  background: var(--red-orange-color-wheel);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: var(--default-transition);
+}
+
+.grid-item .send-btn ion-icon {
+  font-size: 25px;
+  color: var(--white);
+}
+
+.grid-item .send-btn:hover {
+  background: var(--ultramarine-blue);
+}
+
+.copyright {
+  background: hsl(231, 90%, 8%);
+  text-align: center;
+  color: var(--lavender-blue);
+  font-size: var(--fs-6);
+  font-family: "Roboto" sans-serif;
+  padding: 15px var(--px);
+  line-height: 1.7;
+}
+
+.copyright a {
+  display: inline-block;
+  color: var(--red-orange-color-wheel);
+  transition: var(--default-transition);
+}
+
+.copyright a:hover {
+  color: var(--ultramarine-blue);
+}
