@@ -16,7 +16,7 @@ CREATE TABLE courses (
 
 CREATE TABLE schedules (
     tutor_id           INTEGER PRIMARY KEY,
-    tutor_schedules    TIMESTAMP[][] NOT NULL,
+    tutor_schedules    TEXT[][] NOT NULL,
     FOREIGN KEY (tutor_id) REFERENCES users(id)  
 );
 

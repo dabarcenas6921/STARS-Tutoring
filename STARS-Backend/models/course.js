@@ -6,7 +6,6 @@ class Course {
     if (!course) {
       throw "No course provided!";
     }
-    console.log("course:", course.course);
 
     const query = `SELECT tutors FROM courses WHERE course = $1`;
     const result = await db.query(query, [course.course]);
