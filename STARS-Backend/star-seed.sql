@@ -3,3 +3,8 @@
 INSERT INTO users (password, account_type, first_name, last_name, email, panther_id)
 VALUES
 ('$2b$13$vZRTXDLeSWqBM4MuBAusjOLOdYnJ66pbW23bQGTVSPLW1XcnvTMiq','student','David','Barcenas','dbarc021@fiu.edu', 1234567);
+
+
+INSERT INTO courses (course, tutors)
+VALUES
+('COP4555', ARRAY [2,4,9,3,7]);
