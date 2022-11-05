@@ -42,7 +42,17 @@ class Appointment {
     return new_appointment;
   }
 
-  static async getAppointmentByStudentId(student_id) {}
+  static async getAppointmentByStudentId(student_id) {
+    if (!student_id) {
+      throw `Student id not provided!`;
+    }
+
+    const query = `SELECT * FROM appointments WHERE student_id = $1`;
+    const result = await db.query(query, [student_id]);
+    const appointments = result.rows[0];
+
+    return appointments;
+  }
 }
 
 module.exports = Appointment;

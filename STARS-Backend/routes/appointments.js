@@ -16,4 +16,16 @@ router.post("/create", async (req, res) => {
   }
 });
 
+router.get("/getAppointmentsByStudentId/:studentID", async (req, res) => {
+  try {
+    const student_id = req.params.studentID;
+    const appointments = await Appointment.getAppointmentByStudentId(
+      student_id
+    );
+    return res.status(201).json({ appointments });
+  } catch (e) {
+    console.log("Error:", e);
+  }
+});
+
 module.exports = router;
