@@ -19,7 +19,7 @@ const Categories = () => {
       <section className="category" id="categories">
         <p className="section-subtitle">Subject Categories</p>
 
-        <h2 className="section-title">Explore Popular Subjects</h2>
+        <h2 className="section-title">Some of the Courses We Offer</h2>
 
         <ul className="course-item-group">
           <li className="course-category-item">
