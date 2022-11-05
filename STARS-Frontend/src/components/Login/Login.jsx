@@ -1,15 +1,32 @@
 import React from "react";
 import { useState } from "react";
-import "./Login.css";
+import axios from "axios";
 import Footer from "../Footer/Footer";
 import { Button, Card, Container, Input, Row, Spacer } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   function sign_in() {
-    
+    if (!email || !password)
+      return console.log("Missing email and/or password field.");
+
+    try {
+      axios
+        .post("http://localhost:3001/auth/login", {
+          email: email,
+          password: password,
+        })
+        .then(function (response) {
+          console.log(response.data.user);
+          navigate("/dashboard");
+        });
+    } catch (e) {
+      console.log("Error is: " + e);
+    }
   }
   return (
     <div style={{ width: "100%" }}>
@@ -30,6 +47,7 @@ const Login = () => {
             <Row justify="center" align="center">
               <Input
                 label="Email:"
+                type="email"
                 placeholder="example@me.com"
                 underlined
                 width="65%"
@@ -50,7 +68,7 @@ const Login = () => {
             </Row>
             <Spacer y={1.5}></Spacer>
             <Row justify="center" align="center">
-              <Button size="lg" onPress={()=>sign_in()}>
+              <Button size="lg" onPress={() => sign_in()}>
                 Sign In
               </Button>
             </Row>
