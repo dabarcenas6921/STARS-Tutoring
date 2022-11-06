@@ -28,4 +28,14 @@ router.get("/getAppointmentsByStudentId/:studentID", async (req, res) => {
   }
 });
 
+router.get("/getAppointmentsByTutorId/:tutorID", async (req, res) => {
+  try {
+    const tutor_id = req.params.tutorID;
+    const appointments = await Appointment.getAppointmentByTutorId(tutor_id);
+    return res.status(201).json({ appointments });
+  } catch (e) {
+    console.log("Error:", e);
+  }
+});
+
 module.exports = router;
