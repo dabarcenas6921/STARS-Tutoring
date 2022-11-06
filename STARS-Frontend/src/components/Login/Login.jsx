@@ -5,7 +5,7 @@ import Footer from "../Footer/Footer";
 import { Button, Card, Container, Input, Row, Spacer } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -22,6 +22,7 @@ const Login = () => {
         })
         .then(function (response) {
           console.log(response.data.user);
+          setUser(response.data.user);
           navigate("/dashboard");
         });
     } catch (e) {
