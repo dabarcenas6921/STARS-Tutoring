@@ -40,9 +40,9 @@ const Dashboard = ({ user }) => {
         <Text h1>Dashboard</Text>
         <Text h3>Upcoming tutoring appointments</Text>
         {appointmentData ? (
-          <Grid.Container gap={2}>
+          <Grid.Container gap={2} justify="flex-start">
             {appointmentData.map((appointment, idx) => (
-              <Grid key={idx} xs={12} sm={6} lg={4}>
+              <Grid key={idx} xs={12} sm={6}>
                 <AppointmentCard appointment={appointment} />
               </Grid>
             ))}
@@ -57,27 +57,39 @@ const Dashboard = ({ user }) => {
 };
 
 function AppointmentCard({ appointment }) {
+  const startTime = new Date(appointment.app_start_time);
+  const endTime = new Date(appointment.app_end_time);
+
   return (
-    <Card css={{ w: "100%", width: "100%" }}>
+    <Card css={{ h: "100%" }}>
       <Card.Header>
         <Avatar
           css={{ ml: "$8" }}
           size="xl"
           squared
-          src="https://i0.wp.com/www.cis.fiu.edu/wp-content/uploads/2016/07/Kianoosh-1-1.jpg?fit=300%2C300&ssl=1"
+          text={appointment.first_name}
         />
         <Col css={{ pl: "$6" }}>
           <Text size={15} b transform="uppercase">
-            COP4338
+            {appointment.course}
           </Text>
-          <Text h4>Tutoring Appointment with John</Text>
+          <Text h4>
+            Tutoring Appointment with{" "}
+            {appointment.first_name + " " + appointment.last_name}
+          </Text>
           <Row>
             <HiOutlineClock />
             <Text h5 css={{ ml: "$2", position: "relative", bottom: "$2" }}>
-              Mondays 12:00PM - 1:00PM
+              {`${startTime.toLocaleString("en-US", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })} - ${endTime.toLocaleString("en-US", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}`}
             </Text>
           </Row>
-          <Row justify="flex-end">
+          <Row>
             <Button size="sm" light>
               Cancel Appointment
             </Button>
