@@ -13,6 +13,15 @@ class Course {
 
     return tutors;
   }
+
+  static async getCourses() {
+    //Function that returns the array of all available courses;
+    const query = `SELECT DISTINCT course FROM courses`;
+    const result = await db.query(query);
+    const courses = result.rows;
+
+    return courses;
+  }
 }
 
 module.exports = Course;

@@ -16,4 +16,13 @@ router.post("/getTutors", async (req, res) => {
   }
 });
 
+router.get("/getCourses", async (req, res) => {
+  try {
+    const courses = await Course.getCourses();
+    return res.status(201).json({ courses });
+  } catch (e) {
+    console.log("Error:", e);
+  }
+});
+
 module.exports = router;

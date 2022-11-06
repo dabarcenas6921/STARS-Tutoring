@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+const Register = ({ setUser }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [pantherID, setPantherID] = useState("");
@@ -45,7 +45,7 @@ const Register = () => {
           panther_id: pantherID,
         })
         .then(function (response) {
-          console.log(response.data.user);
+          setUser(response.data.user);
           navigate("/dashboard");
         });
     } catch (e) {

@@ -66,7 +66,7 @@ const Footer = () => {
         </div>
 
         <p className="copyright">
-          Copyright © 2022 <a href="#">STARS TUTORING</a>. All rights reserved.
+          Copyright © 2022 <a href="/">FIU STARS TUTORING</a>. All rights reserved.
         </p>
       </footer>
     </>
