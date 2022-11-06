@@ -52,7 +52,7 @@ footer {
 .grid-item .item-heading {
   font-size: var(--fs-4);
   color: var(--white);
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 
 .grid-item .list-item:not(:last-child) {

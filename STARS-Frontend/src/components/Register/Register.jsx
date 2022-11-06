@@ -23,7 +23,14 @@ const Register = () => {
   const navigate = useNavigate();
 
   function register() {
-    if (!firstName || !lastName || !pantherID || !email || !password1 || !password2)
+    if (
+      !firstName ||
+      !lastName ||
+      !pantherID ||
+      !email ||
+      !password1 ||
+      !password2
+    )
       return console.log("Missing some fields.");
     else if (password1 != password2)
       return console.log("Passwords don't match up.");
@@ -35,7 +42,7 @@ const Register = () => {
           last_name: lastName,
           email: email,
           password: password1,
-          panther_id:pantherID,
+          panther_id: pantherID,
         })
         .then(function (response) {
           console.log(response.data.user);
@@ -109,24 +116,24 @@ const Register = () => {
             <Spacer y={1.5}></Spacer>
             <Row justify="center" align="center">
               <Col align="center">
-              <Input.Password
-                label="Password:"
-                placeholder="Password"
-                underlined
-                width="80%"
-                required={true}
-                onChange={(event) => setPassword1(event.target.value)}
-              ></Input.Password>
+                <Input.Password
+                  label="Password:"
+                  placeholder="Password"
+                  underlined
+                  width="80%"
+                  required={true}
+                  onChange={(event) => setPassword1(event.target.value)}
+                ></Input.Password>
               </Col>
               <Col align="center">
-              <Input.Password
-                label="Confirm Password:"
-                placeholder="Password"
-                underlined
-                width="80%"
-                required={true}
-                onChange={(event) => setPassword2(event.target.value)}
-              ></Input.Password>
+                <Input.Password
+                  label="Confirm Password:"
+                  placeholder="Password"
+                  underlined
+                  width="80%"
+                  required={true}
+                  onChange={(event) => setPassword2(event.target.value)}
+                ></Input.Password>
               </Col>
             </Row>
             <Spacer y={1.0}></Spacer>

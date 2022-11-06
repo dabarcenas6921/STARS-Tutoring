@@ -51,7 +51,7 @@ const Login = ({ setUser }) => {
                 type="email"
                 placeholder="example@me.com"
                 underlined
-                width="65%"
+                width="80%"
                 required={true}
                 onChange={(event) => setEmail(event.target.value)}
               ></Input>
@@ -62,7 +62,7 @@ const Login = ({ setUser }) => {
                 label="Password:"
                 placeholder="Password"
                 underlined
-                width="65%"
+                width="80%"
                 required={true}
                 onChange={(event) => setPassword(event.target.value)}
               ></Input.Password>

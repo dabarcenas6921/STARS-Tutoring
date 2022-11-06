@@ -1,6 +1,7 @@
 import React from "react";
 import logoFooter from "../../assets/logo-footer.png";
 import "./Footer.css";
+import { Button, Card, Container, Input, Row, Spacer } from "@nextui-org/react";
 
 const Footer = () => {
   return (
@@ -60,12 +61,7 @@ const Footer = () => {
 
           <div className="grid-item">
             <h4 className="item-heading">Subscribe Now</h4>
-
-            <div className="wrapper">
-              <input type="text" name="subscribe" placeholder="Email Address" />
-
-              <button className="send-btn"></button>
-            </div>
+              <Input labelLeft="Email" width="75%" size="xl" type="email"></Input>
           </div>
         </div>
 

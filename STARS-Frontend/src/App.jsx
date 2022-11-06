@@ -13,8 +13,8 @@ function App() {
 
   return (
     <div>
-      <GlobalNavbar />
       <BrowserRouter>
+      <GlobalNavbar user={user} setUser={setUser}/>
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<Login setUser={setUser} />}></Route>
