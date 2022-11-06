@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Avatar,
   Button,
@@ -13,13 +13,26 @@ import { useNavigate } from "react-router-dom";
 function GlobalNavbar({ user, setUser }) {
   const navigate = useNavigate();
   const [key, setKey] = useState();
+
   useEffect(() => {
-    if(key=="logout")
-    {
-      setUser({})
+    const userData = JSON.parse(localStorage.getItem("user"));
+    console.log(userData);
+    if (userData) {
+      setUser(userData);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (key == "logout") {
+      setUser({});
       navigate("/");
     }
-    },[key])
+  }, [key]);
+
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
+
   function CheckUser() {
     if (Object.keys(user).length == 0)
       return (

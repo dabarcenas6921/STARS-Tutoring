@@ -21,7 +21,6 @@ const Login = ({ setUser }) => {
           password: password,
         })
         .then(function (response) {
-          console.log(response.data.user);
           setUser(response.data.user);
           navigate("/dashboard");
         });
@@ -29,6 +28,7 @@ const Login = ({ setUser }) => {
       console.log("Error is: " + e);
     }
   }
+
   return (
     <div style={{ width: "100%" }}>
       <Container
@@ -49,6 +49,7 @@ const Login = ({ setUser }) => {
               <Input
                 label="Email:"
                 type="email"
+                autoComplete="email"
                 placeholder="example@me.com"
                 underlined
                 width="80%"
@@ -61,6 +62,7 @@ const Login = ({ setUser }) => {
               <Input.Password
                 label="Password:"
                 placeholder="Password"
+                autoComplete="current-password"
                 underlined
                 width="80%"
                 required={true}
