@@ -20,17 +20,32 @@ const Dashboard = ({ user }) => {
 
   useEffect(() => {
     // Get user appointments from the database when dashboard loads
-    try {
-      axios
-        .get(
-          `http://localhost:3001/appointments/getAppointmentsByStudentId/${user.id}`
-        )
-        .then(function (response) {
-          console.log("appointment data:", response.data.appointments);
-          setAppointmentData(response.data.appointments);
-        });
-    } catch (e) {
-      console.log("Error is: " + e);
+    if (user.account_type == "tutor") {
+      try {
+        axios
+          .get(
+            `http://localhost:3001/appointments/getAppointmentsByTutorId/${user.id}`
+          )
+          .then(function (response) {
+            console.log("appointment data:", response.data.appointments);
+            setAppointmentData(response.data.appointments);
+          });
+      } catch (e) {
+        console.log("Error is: " + e);
+      }
+    } else {
+      try {
+        axios
+          .get(
+            `http://localhost:3001/appointments/getAppointmentsByStudentId/${user.id}`
+          )
+          .then(function (response) {
+            console.log("appointment data:", response.data.appointments);
+            setAppointmentData(response.data.appointments);
+          });
+      } catch (e) {
+        console.log("Error is: " + e);
+      }
     }
   }, []);
 
@@ -67,7 +82,9 @@ function AppointmentCard({ appointment }) {
           css={{ ml: "$8" }}
           size="xl"
           squared
-          text={appointment.first_name}
+          text={
+            appointment.first_name.charAt(0) + appointment.last_name.charAt(0)
+          }
         />
         <Col css={{ pl: "$6" }}>
           <Text size={15} b transform="uppercase">
