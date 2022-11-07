@@ -14,7 +14,6 @@ function App() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    console.log(userData);
     if (userData) {
       setUser(userData);
     }
@@ -30,7 +29,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<Login setUser={setUser} />}></Route>
-          <Route path="/register" element={<Register />}></Route>
+          <Route path="/register" element={<Register setUser={setUser} />}></Route>
           <Route path="/appointments" element={<Appointments />}></Route>
           <Route path="/dashboard" element={<Dashboard user={user} />}></Route>
         </Routes>

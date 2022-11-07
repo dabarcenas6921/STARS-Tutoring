@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+const Register = ({ setUser }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [pantherID, setPantherID] = useState("");
@@ -22,7 +22,7 @@ const Register = () => {
   const [password2, setPassword2] = useState("");
   const navigate = useNavigate();
 
-  function register() {
+  function registerUser() {
     if (
       !firstName ||
       !lastName ||
@@ -45,7 +45,7 @@ const Register = () => {
           panther_id: pantherID,
         })
         .then(function (response) {
-          console.log(response.data.user);
+          setUser(response.data.user);
           navigate("/dashboard");
         });
     } catch (e) {
@@ -138,7 +138,7 @@ const Register = () => {
             </Row>
             <Spacer y={1.0}></Spacer>
             <Row justify="center" align="center">
-              <Button size="lg" onPress={() => register()}>
+              <Button size="lg" onPress={() => registerUser()}>
                 Create Account
               </Button>
             </Row>

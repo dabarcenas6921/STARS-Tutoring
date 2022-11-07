@@ -6,13 +6,22 @@ router.get("/", (req, res) => {
   res.send("courses route");
 });
 
-router.post("/getTutors", async (req, res) => {
+router.get("/getTutors/:course", async (req, res) => {
   try {
-    const course = req.body;
+    const course = req.params.course;
     const tutors = await Course.getTutors(course);
-    return res.status(201).send(tutors[0]);
+    return res.status(201).json(tutors[0]);
   } catch (e) {
     console.log("error:", e);
+  }
+});
+
+router.get("/getCourses", async (req, res) => {
+  try {
+    const courses = await Course.getCourses();
+    return res.status(201).send(courses);
+  } catch (e) {
+    console.log("Error:", e);
   }
 });
 

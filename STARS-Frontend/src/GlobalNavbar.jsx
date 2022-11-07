@@ -15,14 +15,6 @@ function GlobalNavbar({ user, setUser }) {
   const [key, setKey] = useState();
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    console.log(userData);
-    if (userData) {
-      setUser(userData);
-    }
-  }, []);
-
-  useEffect(() => {
     if (key == "logout") {
       setUser({});
       navigate("/");
@@ -34,6 +26,7 @@ function GlobalNavbar({ user, setUser }) {
   }, [user]);
 
   function CheckUser() {
+    // If there is no user currently logged in
     if (Object.keys(user).length == 0)
       return (
         <Navbar.Content>
@@ -62,6 +55,7 @@ function GlobalNavbar({ user, setUser }) {
                   user.first_name.charAt(0).toUpperCase() +
                   user.last_name.charAt(0).toUpperCase()
                 }
+                aria-label="Dropdown Initials"
                 pointer={true}
               ></Avatar>
             </Dropdown.Trigger>
