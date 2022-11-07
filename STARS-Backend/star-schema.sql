@@ -27,6 +27,7 @@ CREATE TABLE appointments(
     app_start_time     TIMESTAMP NOT NULL,
     app_end_time       TIMESTAMP NOT NULL,
     created_at         TIMESTAMP NOT NULL DEFAULT NOW(),
+    course             TEXT NOT NULL,
     FOREIGN KEY (student_id) REFERENCES users(id),
     FOREIGN KEY (tutor_id) REFERENCES users(id)
 );

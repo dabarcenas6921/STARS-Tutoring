@@ -31,8 +31,8 @@ function App() {
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<Login setUser={setUser} />}></Route>
           <Route path="/register" element={<Register />}></Route>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/appointments" element={<Appointments />}></Route>
+          <Route path="/dashboard" element={<Dashboard user={user} />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
