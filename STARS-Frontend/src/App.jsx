@@ -33,6 +33,7 @@ function App() {
           <Route path="/register" element={<Register setUser={setUser} />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/appointments" element={<Appointments />}></Route>
+          <Route path="/dashboard" element={<Dashboard user={user} />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
