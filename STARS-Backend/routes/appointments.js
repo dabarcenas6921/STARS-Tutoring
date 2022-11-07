@@ -28,4 +28,26 @@ router.get("/getAppointmentsByStudentId/:studentID", async (req, res) => {
   }
 });
 
+router.get("/getAppointmentsByTutorId/:tutorID", async (req, res) => {
+  try {
+    const tutor_id = req.params.tutorID;
+    const appointments = await Appointment.getAppointmentByTutorId(tutor_id);
+    return res.status(201).json({ appointments });
+  } catch (e) {
+    console.log("Error:", e);
+  }
+});
+
+router.delete("/deleteAppointment/:appointmentID", async (req, res) => {
+  try {
+    const appointmentId = req.params.appointmentID;
+    await Appointment.deleteAppointment(appointmentId);
+    res
+      .status(201)
+      .send(`Succesfully deleted appointment with id ${appointmentId}`);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 module.exports = router;
