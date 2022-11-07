@@ -11,15 +11,15 @@ import {
   Col,
   Row,
   Grid,
+  Modal,
 } from "@nextui-org/react";
 import { HiOutlineClock } from "react-icons/hi";
 import { useEffect } from "react";
 
 const Dashboard = ({ user }) => {
-  const [appointmentData, setAppointmentData] = useState();
+  const [appointmentData, setAppointmentData] = useState([]);
 
-  useEffect(() => {
-    // Get user appointments from the database when dashboard loads
+  function getAppointments() {
     if (user.account_type == "tutor") {
       try {
         axios
@@ -27,7 +27,6 @@ const Dashboard = ({ user }) => {
             `http://localhost:3001/appointments/getAppointmentsByTutorId/${user.id}`
           )
           .then(function (response) {
-            console.log("appointment data:", response.data.appointments);
             setAppointmentData(response.data.appointments);
           });
       } catch (e) {
@@ -40,13 +39,17 @@ const Dashboard = ({ user }) => {
             `http://localhost:3001/appointments/getAppointmentsByStudentId/${user.id}`
           )
           .then(function (response) {
-            console.log("appointment data:", response.data.appointments);
             setAppointmentData(response.data.appointments);
           });
       } catch (e) {
         console.log("Error is: " + e);
       }
     }
+  }
+
+  useEffect(() => {
+    // Get user appointments from the database when dashboard loads
+    getAppointments();
   }, []);
 
   return (
@@ -54,11 +57,14 @@ const Dashboard = ({ user }) => {
       <Container responsive lg css={{ mt: 10, mb: 50 }}>
         <Text h1>Dashboard</Text>
         <Text h3>Upcoming tutoring appointments</Text>
-        {appointmentData ? (
+        {appointmentData.length > 0 ? (
           <Grid.Container gap={2} justify="flex-start">
             {appointmentData.map((appointment, idx) => (
               <Grid key={idx} xs={12} sm={6}>
-                <AppointmentCard appointment={appointment} />
+                <AppointmentCard
+                  appointment={appointment}
+                  getAppointments={getAppointments}
+                />
               </Grid>
             ))}
           </Grid.Container>
@@ -66,14 +72,31 @@ const Dashboard = ({ user }) => {
           <Text>No appointments to be found!</Text>
         )}
       </Container>
-      <Footer />
     </div>
   );
 };
 
-function AppointmentCard({ appointment }) {
+function AppointmentCard({ appointment, getAppointments }) {
   const startTime = new Date(appointment.app_start_time);
   const endTime = new Date(appointment.app_end_time);
+
+  const [visible, setVisible] = useState(false);
+
+  function cancelAppointment() {
+    setVisible(false);
+    try {
+      axios
+        .delete(
+          `http://localhost:3001/appointments/deleteAppointment/${appointment.appointment_id}`
+        )
+        .then(function (response) {
+          console.log(`Deleted appointment ${appointment.appointment_id}`);
+          getAppointments();
+        });
+    } catch (e) {
+      console.log("Error:", e);
+    }
+  }
 
   return (
     <Card css={{ h: "100%" }}>
@@ -106,13 +129,33 @@ function AppointmentCard({ appointment }) {
               })}`}
             </Text>
           </Row>
-          <Row>
-            <Button size="sm" light>
+          <Row justify="flex-end">
+            <Button
+              size="sm"
+              light
+              color="error"
+              onPress={() => setVisible(true)}
+            >
               Cancel Appointment
             </Button>
-            <Button css={{ ml: "$5" }} size="sm">
-              View Details
-            </Button>
+            <Modal closeButton open={visible} onClose={() => setVisible(false)}>
+              <Modal.Header>
+                <Text h3>
+                  Are you sure you want to cancel your appointment?
+                </Text>
+              </Modal.Header>
+              <Modal.Body>
+                <Row justify="center">
+                  <Button
+                    auto
+                    color="error"
+                    onPress={() => cancelAppointment()}
+                  >
+                    Cancel Appointment
+                  </Button>
+                </Row>
+              </Modal.Body>
+            </Modal>
           </Row>
         </Col>
       </Card.Header>

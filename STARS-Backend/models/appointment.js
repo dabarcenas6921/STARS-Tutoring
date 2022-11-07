@@ -73,6 +73,20 @@ class Appointment {
 
     return appointments;
   }
+
+  static async deleteAppointment(appointment_id) {
+    if (!appointment_id) {
+      throw `No appointment id provided!`;
+    }
+
+    const result = db.query(
+      `
+    DELETE FROM appointments
+    WHERE appointment_id = $1;
+    `,
+      [appointment_id]
+    );
+  }
 }
 
 module.exports = Appointment;

@@ -38,4 +38,16 @@ router.get("/getAppointmentsByTutorId/:tutorID", async (req, res) => {
   }
 });
 
+router.delete("/deleteAppointment/:appointmentID", async (req, res) => {
+  try {
+    const appointmentId = req.params.appointmentID;
+    await Appointment.deleteAppointment(appointmentId);
+    res
+      .status(201)
+      .send(`Succesfully deleted appointment with id ${appointmentId}`);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 module.exports = router;
