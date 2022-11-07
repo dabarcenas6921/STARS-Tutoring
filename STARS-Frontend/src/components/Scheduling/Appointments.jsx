@@ -92,11 +92,11 @@ function Appointments({ user }) {
             </Row>
             <Spacer y={1.0}></Spacer>
             <Row justify="center" align="center">
-              <Text b>Set an Tutor and Appointment Time</Text>
+              <Text b>Set a Tutor and Appointment Time</Text>
             </Row>
             <AppointmentCard
               user={user}
-              course={course}
+              course={course.currentKey}
               allTutors={allTutors}
             />
             <Spacer y={1.0}></Spacer>
@@ -111,14 +111,16 @@ function Appointments({ user }) {
 
 function AppointmentCard({ user, course, allTutors }) {
   const [visible, setVisible] = useState(false);
-  const [schedule, setSchedule] = useState("--");
+  const [schedule, setSchedule] = useState("Session Time");
 
   const selectedValue = useMemo(() => schedule, [schedule]);
 
-  function createAppointment(tutor_id) {
-    const timings = schedule.split(" - ");
-    const startTime = new Date(timings[0]);
-    const endTime = new Date(timings[2]);
+  function createAppointment(tutor) {
+    const timings = Array.from(schedule).join(", ");
+
+    console.log(timings, );
+    const startTime = new Date(timings.slice(0, 19));
+    const endTime = new Date(timings.slice(22, timings.length));
 
     setVisible(false);
 
@@ -126,13 +128,14 @@ function AppointmentCard({ user, course, allTutors }) {
       axios
         .post(`http://localhost:3001/appointments/create/`, {
           student_id: user.id,
-          tutor_id: tutor_id,
+          tutor_id: tutor.id,
           app_start_time: startTime,
           app_end_time: endTime,
           course: course,
         })
         .then(function (response) {
-          console.log(`Created appointment for ${response.data.course}!`);
+          console.log(response.data)
+          console.log(`Created appointment for ${response.data.appointment.course}!`);
         });
     } catch (e) {
       console.log("Error:", e);
@@ -161,7 +164,7 @@ function AppointmentCard({ user, course, allTutors }) {
               </Text>
               <Row>
                 <HiOutlineClock style={{size:"100px","margin-top":"11px"}} />
-                <Dropdown>
+                <Dropdown placement="bottom-left">
                   <Dropdown.Button light css={{ tt: "capitalize" }}>
                     {selectedValue}
                   </Dropdown.Button>
@@ -206,7 +209,7 @@ function AppointmentCard({ user, course, allTutors }) {
                         color="success"
                         onPress={() =>
                           createAppointment(
-                            tutor.id
+                            tutor
                           )
                         }
                       >

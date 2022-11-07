@@ -47,7 +47,7 @@ function GlobalNavbar({ user, setUser }) {
         <Navbar.Content>
           <Navbar.Item>
             <Button auto flat as={Link} href="/appointments">
-              Schedule Meeting
+              Schedule a Meeting
             </Button>
           </Navbar.Item>
           <Dropdown>
