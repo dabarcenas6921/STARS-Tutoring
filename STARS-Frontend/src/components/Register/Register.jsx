@@ -22,7 +22,7 @@ const Register = ({ setUser }) => {
   const [password2, setPassword2] = useState("");
   const navigate = useNavigate();
 
-  function register() {
+  function registerUser() {
     if (
       !firstName ||
       !lastName ||
@@ -138,7 +138,7 @@ const Register = ({ setUser }) => {
             </Row>
             <Spacer y={1.0}></Spacer>
             <Row justify="center" align="center">
-              <Button size="lg" onPress={() => register()}>
+              <Button size="lg" onPress={() => registerUser()}>
                 Create Account
               </Button>
             </Row>
