@@ -6,11 +6,11 @@ router.get("/", (req, res) => {
   res.send("schedules route");
 });
 
-router.post("/getTutorSchedule", async (req, res) => {
+router.get("/getTutorSchedule/:tutor_id", async (req, res) => {
   try {
-    const tutor_id = req.body;
+    const tutor_id = req.params.tutor_id;
     const schedules = await Schedule.getTutorSchedule(tutor_id);
-    return res.status(201).send(schedules[0]);
+    return res.status(201).json(schedules[0]);
   } catch (e) {
     console.log("error:", e);
   }

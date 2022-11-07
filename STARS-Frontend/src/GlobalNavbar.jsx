@@ -19,6 +19,8 @@ function GlobalNavbar({ user, setUser }) {
       setUser({});
       navigate("/");
     }
+    if (key == "profile")
+      navigate("/dashboard");
   }, [key]);
 
   useEffect(() => {
@@ -60,16 +62,12 @@ function GlobalNavbar({ user, setUser }) {
               ></Avatar>
             </Dropdown.Trigger>
             <Dropdown.Menu
-              color="secondary"
               aria-label="User Actions"
               onAction={setKey}
             >
-              <Dropdown.Item key="profile" css={{ height: "$18" }}>
-                <Text b color="inherit" css={{ d: "flex" }}>
-                  Signed in as
-                </Text>
-                <Text b color="inherit" css={{ d: "flex" }}>
-                  {user.email}
+              <Dropdown.Item key="profile">
+                <Text color="inherit" css={{ d: "flex" }}>
+                  Dashboard
                 </Text>
               </Dropdown.Item>
               <Dropdown.Item key="logout" color="error" withDivider>
