@@ -108,6 +108,10 @@ function Appointments({ user }) {
 function AppointmentTable({ user, course, allTutors }) {
   const [chosenTutor, setChosenTutor] = useState(new Set());
 
+  useEffect(() => {
+    console.log(chosenTutor);
+  }, [chosenTutor])
+
   return (allTutors.map((aTutor) => (
     <div>
       <Spacer y={1.0}></Spacer>
@@ -175,8 +179,8 @@ function ConfirmButton({ user, sessionSet, course }) {
     const timings = Array.from(session);
 
     const tutorID = parseInt(timings.slice(0, 1))
-    const startTime = new Date(timings.slice(4, 23).toString().replaceAll(",", ""));
-    const endTime = new Date(timings.slice(26, timings.length).toString().replaceAll(",", ""));
+    const startTime = timings.slice(4, 23).toString().replaceAll(",", "");
+    const endTime = timings.slice(26, timings.length).toString().replaceAll(",", "");
 
     setVisible(false);
 
@@ -191,7 +195,7 @@ function ConfirmButton({ user, sessionSet, course }) {
         })
         .then(function (response) {
           console.log(
-            `Created appointment for ${response.data.appointment.course}!`
+            `Created appointment for ${response.data.appointment.course} from ${response.data.appointment.app_start_time} to ${response.data.appointment.app_end_time}!`
           );
         });
     } catch (e) {
