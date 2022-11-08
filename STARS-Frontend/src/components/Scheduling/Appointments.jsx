@@ -1,4 +1,5 @@
 import React from "react";
+import {Key} from 'react';
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import Footer from "../Footer/Footer";
@@ -89,14 +90,13 @@ function Appointments({ user }) {
             </Row>
             <Spacer y={1.0}></Spacer>
             <Row justify="center" align="center">
-              <Text b>Select a Tutor and Appointment Time</Text>
+              <Text color="primary" b>Select a Tutor and Appointment Time</Text>
             </Row>
             <AppointmentTable
               user={user}
               course={course.currentKey}
               allTutors={allTutors}
             />
-            <Spacer y={1.0}></Spacer>
             <Row justify="center" align="center"></Row>
           </Card>
         </Container>
@@ -107,94 +107,77 @@ function Appointments({ user }) {
 }
 
 function AppointmentTable({ user, course, allTutors }) {
-  const [schedule, setSchedule] = useState("Session Time");
-  const [tutorID, setTutorID] = useState(new Set());
+  const [chosenTutor, setChosenTutor] = useState(new Set());
 
-  const selectedValue = useMemo(() => schedule, [schedule]);
-  useEffect(() => {
-    const [first] = tutorID;
-    console.log(first);
-  }, [tutorID]);
-
-  if (allTutors.length == 0) return;
-
-  return (
+  return (allTutors.map((aTutor) => (
     <div>
+      <Spacer y={1.0}></Spacer>
+      <Container css={{ width: "80%" }}>
+          <Card variant="bordered" borderWeight="light" css={{ "padding-top": "3%", "padding-bottom": "5%" }}>
+      <Row justify="center" align="center">
+        <h4>{aTutor.first_name + " " + aTutor.last_name}</h4>
+        </Row>
       <Row justify="center" align="center">
         <Table
           aria-label="Tutor Selection Table"
           fixed
           striped
           lined
-          disallowEmptySelection
           selectionMode="single"
-          selectedKeys={tutorID}
-          onSelectionChange={setTutorID}
+          selectedKeys={chosenTutor}
+          onSelectionChange={setChosenTutor}
           css={{
             height: "auto",
             minWidth: "100%",
           }}
         >
           <Table.Header>
-            <Table.Column>Tutor Name</Table.Column>
-            <Table.Column align="center">Schedule</Table.Column>
+            <Table.Column align="center">Start Time</Table.Column>
+            <Table.Column align="center">End Time</Table.Column>
           </Table.Header>
           <Table.Body>
-            {allTutors.map((aTutor) => (
-              <Table.Row key={aTutor.id}>
-                <Table.Cell>
-                  {aTutor.first_name + " " + aTutor.last_name}
-                </Table.Cell>
-                <Table.Cell>
-                  <Dropdown placement="bottom-left">
-                    <Dropdown.Button light css={{ tt: "capitalize" }}>
-                      {selectedValue}
-                    </Dropdown.Button>
-                    <Dropdown.Menu
-                      aria-label="Single selection schedules"
-                      disallowEmptySelection
-                      selectionMode="single"
-                      selectedKeys={schedule}
-                      onSelectionChange={setSchedule}
-                    >
-                      {aTutor.tutor_schedules.map((schedule) => (
-                        <Dropdown.Item
-                          css={{ fontSize: "11px" }}
-                          key={`${schedule[0]} - ${schedule[1]}`}
-                        >
-                          {`${schedule[0]} - ${schedule[1]}`}
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Table.Cell>
-              </Table.Row>
-            ))}
+          {aTutor.tutor_schedules.map((schedule) => {
+            const dateStart = new Date(schedule[0]);
+            const dateEnd = new Date(schedule[1]);
+
+            return <Table.Row key={`${aTutor.id} - ${schedule[0]} - ${schedule[1]}`}>
+                          <Table.Cell>{`${dateStart.toLocaleString("en-US", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}`}</Table.Cell>
+              <Table.Cell>{`${dateEnd.toLocaleString("en-US", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}`}</Table.Cell>
+                        </Table.Row>
+            })}
           </Table.Body>
         </Table>
       </Row>
+      </Card>
+      </Container>
       <Spacer y={1.0}></Spacer>
       <Row justify="center" align="center">
         <ConfirmButton
           user={user}
-          tutorID={tutorID.currentKey}
-          schedule={schedule}
+          sessionSet={chosenTutor}
           course={course}
         />
       </Row>
     </div>
-  );
+  )));
 }
 
-function ConfirmButton({ user, tutorID, schedule, course }) {
+function ConfirmButton({ user, sessionSet, course }) {
+  const session = sessionSet.currentKey;
   const [visible, setVisible] = useState(false);
 
   function createAppointment() {
-    const timings = Array.from(schedule).join(", ");
+    const timings = Array.from(session);
 
-    console.log(timings);
-    const startTime = new Date(timings.slice(0, 19));
-    const endTime = new Date(timings.slice(22, timings.length));
+    const tutorID = parseInt(timings.slice(0, 1))
+    const startTime = new Date(timings.slice(4, 23).toString().replaceAll(",", ""));
+    const endTime = new Date(timings.slice(26, timings.length).toString().replaceAll(",", ""));
 
     setVisible(false);
 
@@ -208,7 +191,6 @@ function ConfirmButton({ user, tutorID, schedule, course }) {
           course: course,
         })
         .then(function (response) {
-          console.log(response.data);
           console.log(
             `Created appointment for ${response.data.appointment.course}!`
           );
@@ -218,7 +200,7 @@ function ConfirmButton({ user, tutorID, schedule, course }) {
     }
   }
 
-  if (tutorID != null) {
+  if (sessionSet.size != 0) {
     return (
       <Row justify="center">
         <Button auto size="lg" onPress={() => setVisible(true)}>
