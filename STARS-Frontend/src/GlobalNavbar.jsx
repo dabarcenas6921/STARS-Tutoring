@@ -19,8 +19,7 @@ function GlobalNavbar({ user, setUser }) {
       setUser({});
       navigate("/");
     }
-    if (key == "profile")
-      navigate("/dashboard");
+    if (key == "profile") navigate("/dashboard");
   }, [key]);
 
   useEffect(() => {
@@ -61,10 +60,7 @@ function GlobalNavbar({ user, setUser }) {
                 pointer={true}
               ></Avatar>
             </Dropdown.Trigger>
-            <Dropdown.Menu
-              aria-label="User Actions"
-              onAction={setKey}
-            >
+            <Dropdown.Menu aria-label="User Actions" onAction={setKey}>
               <Dropdown.Item key="profile">
                 <Text color="inherit" css={{ d: "flex" }}>
                   Dashboard
@@ -89,7 +85,12 @@ function GlobalNavbar({ user, setUser }) {
       <Navbar.Content enableCursorHighlight hideIn={"xs"}>
         <Navbar.Link href="/">Home</Navbar.Link>
         <Navbar.Link href="/schedules">Tutoring Schedule</Navbar.Link>
-        <Navbar.Link href="https://www.fiu.edu/about/contact-us/index.html">Contact FIU</Navbar.Link>
+        <Navbar.Link href="https://www.fiu.edu/about/contact-us/index.html">
+          Contact FIU
+        </Navbar.Link>
+        {Object.keys(user).length == 0 ? null : (
+          <Navbar.Link href="/dashboard">Dashboard</Navbar.Link>
+        )}
       </Navbar.Content>
       <CheckUser></CheckUser>
     </Navbar>

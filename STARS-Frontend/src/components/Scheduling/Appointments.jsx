@@ -13,6 +13,7 @@ import {
   Table,
   Text,
 } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 
 function Appointments({ user }) {
   const [course, setCourse] = useState(new Set(["--"]));
@@ -89,7 +90,9 @@ function Appointments({ user }) {
             </Row>
             <Spacer y={1.0}></Spacer>
             <Row justify="center" align="center">
-              <Text color="primary" b>Select a Tutor and Appointment Time</Text>
+              <Text color="primary" b>
+                Select a Tutor and Appointment Time
+              </Text>
             </Row>
             <AppointmentTable
               user={user}
@@ -110,77 +113,85 @@ function AppointmentTable({ user, course, allTutors }) {
 
   useEffect(() => {
     console.log(chosenTutor);
-  }, [chosenTutor])
+  }, [chosenTutor]);
 
-  return (allTutors.map((aTutor) => (
+  return allTutors.map((aTutor) => (
     <div>
       <Spacer y={1.0}></Spacer>
       <Container css={{ width: "80%" }}>
-          <Card variant="bordered" borderWeight="light" css={{ "padding-top": "3%", "padding-bottom": "5%" }}>
-      <Row justify="center" align="center">
-        <h4>{aTutor.first_name + " " + aTutor.last_name}</h4>
-        </Row>
-      <Row justify="center" align="center">
-        <Table
-          aria-label="Tutor Selection Table"
-          fixed
-          striped
-          lined
-          selectionMode="single"
-          selectedKeys={chosenTutor}
-          onSelectionChange={setChosenTutor}
-          css={{
-            height: "auto",
-            minWidth: "100%",
-          }}
+        <Card
+          variant="bordered"
+          borderWeight="light"
+          css={{ "padding-top": "3%", "padding-bottom": "5%" }}
         >
-          <Table.Header>
-            <Table.Column align="center">Start Time</Table.Column>
-            <Table.Column align="center">End Time</Table.Column>
-          </Table.Header>
-          <Table.Body>
-          {aTutor.tutor_schedules.map((schedule) => {
-            const dateStart = new Date(schedule[0]);
-            const dateEnd = new Date(schedule[1]);
+          <Row justify="center" align="center">
+            <h4>{aTutor.first_name + " " + aTutor.last_name}</h4>
+          </Row>
+          <Row justify="center" align="center">
+            <Table
+              aria-label="Tutor Selection Table"
+              fixed
+              striped
+              lined
+              selectionMode="single"
+              selectedKeys={chosenTutor}
+              onSelectionChange={setChosenTutor}
+              css={{
+                height: "auto",
+                minWidth: "100%",
+              }}
+            >
+              <Table.Header>
+                <Table.Column align="center">Start Time</Table.Column>
+                <Table.Column align="center">End Time</Table.Column>
+              </Table.Header>
+              <Table.Body>
+                {aTutor.tutor_schedules.map((schedule) => {
+                  const dateStart = new Date(schedule[0]);
+                  const dateEnd = new Date(schedule[1]);
 
-            return <Table.Row key={`${aTutor.id} - ${schedule[0]} - ${schedule[1]}`}>
-                          <Table.Cell>{`${dateStart.toLocaleString("en-US", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })}`}</Table.Cell>
-              <Table.Cell>{`${dateEnd.toLocaleString("en-US", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })}`}</Table.Cell>
-                        </Table.Row>
-            })}
-          </Table.Body>
-        </Table>
-      </Row>
-      </Card>
+                  return (
+                    <Table.Row
+                      key={`${aTutor.id} - ${schedule[0]} - ${schedule[1]}`}
+                    >
+                      <Table.Cell>{`${dateStart.toLocaleString("en-US", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}`}</Table.Cell>
+                      <Table.Cell>{`${dateEnd.toLocaleString("en-US", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}`}</Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table>
+          </Row>
+        </Card>
       </Container>
       <Spacer y={1.0}></Spacer>
       <Row justify="center" align="center">
-        <ConfirmButton
-          user={user}
-          sessionSet={chosenTutor}
-          course={course}
-        />
+        <ConfirmButton user={user} sessionSet={chosenTutor} course={course} />
       </Row>
     </div>
-  )));
+  ));
 }
 
 function ConfirmButton({ user, sessionSet, course }) {
   const session = sessionSet.currentKey;
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
   function createAppointment() {
     const timings = Array.from(session);
 
-    const tutorID = parseInt(timings.slice(0, 1))
+    const tutorID = parseInt(timings.slice(0, 1));
     const startTime = timings.slice(4, 23).toString().replaceAll(",", "");
-    const endTime = timings.slice(26, timings.length).toString().replaceAll(",", "");
+    const endTime = timings
+      .slice(26, timings.length)
+      .toString()
+      .replaceAll(",", "");
 
     setVisible(false);
 
@@ -197,6 +208,7 @@ function ConfirmButton({ user, sessionSet, course }) {
           console.log(
             `Created appointment for ${response.data.appointment.course} from ${response.data.appointment.app_start_time} to ${response.data.appointment.app_end_time}!`
           );
+          navigate("/dashboard");
         });
     } catch (e) {
       console.log("Error:", e);
