@@ -149,6 +149,7 @@ function AppointmentCard({ appointment, getAppointments }) {
                   <Button
                     auto
                     color="error"
+                    
                     onPress={() => cancelAppointment()}
                   >
                     Cancel Appointment
