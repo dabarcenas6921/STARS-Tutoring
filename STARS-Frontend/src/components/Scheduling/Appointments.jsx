@@ -3,19 +3,16 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import Footer from "../Footer/Footer";
 import {
-  Avatar,
   Button,
   Card,
-  Col,
   Container,
   Dropdown,
   Modal,
   Row,
   Spacer,
+  Table,
   Text,
 } from "@nextui-org/react";
-import { HiOutlineClock } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
 
 function Appointments({ user }) {
   const [course, setCourse] = useState(new Set(["--"]));
@@ -92,9 +89,9 @@ function Appointments({ user }) {
             </Row>
             <Spacer y={1.0}></Spacer>
             <Row justify="center" align="center">
-              <Text b>Set a Tutor and Appointment Time</Text>
+              <Text b>Select a Tutor and Appointment Time</Text>
             </Row>
-            <AppointmentCard
+            <AppointmentTable
               user={user}
               course={course.currentKey}
               allTutors={allTutors}
@@ -109,16 +106,93 @@ function Appointments({ user }) {
   );
 }
 
-function AppointmentCard({ user, course, allTutors }) {
-  const [visible, setVisible] = useState(false);
+function AppointmentTable({ user, course, allTutors }) {
   const [schedule, setSchedule] = useState("Session Time");
+  const [tutorID, setTutorID] = useState(new Set());
 
   const selectedValue = useMemo(() => schedule, [schedule]);
+  useEffect(() => {
+    const [first] = tutorID;
+    console.log(first);
+  }, [tutorID]);
 
-  function createAppointment(tutor) {
+  if (allTutors.length == 0) return;
+
+  return (
+    <div>
+      <Row justify="center" align="center">
+        <Table
+          aria-label="Tutor Selection Table"
+          fixed
+          striped
+          lined
+          disallowEmptySelection
+          selectionMode="single"
+          selectedKeys={tutorID}
+          onSelectionChange={setTutorID}
+          css={{
+            height: "auto",
+            minWidth: "100%",
+          }}
+        >
+          <Table.Header>
+            <Table.Column>Tutor Name</Table.Column>
+            <Table.Column align="center">Schedule</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {allTutors.map((aTutor) => (
+              <Table.Row key={aTutor.id}>
+                <Table.Cell>
+                  {aTutor.first_name + " " + aTutor.last_name}
+                </Table.Cell>
+                <Table.Cell>
+                  <Dropdown placement="bottom-left">
+                    <Dropdown.Button light css={{ tt: "capitalize" }}>
+                      {selectedValue}
+                    </Dropdown.Button>
+                    <Dropdown.Menu
+                      aria-label="Single selection schedules"
+                      disallowEmptySelection
+                      selectionMode="single"
+                      selectedKeys={schedule}
+                      onSelectionChange={setSchedule}
+                    >
+                      {aTutor.tutor_schedules.map((schedule) => (
+                        <Dropdown.Item
+                          css={{ fontSize: "11px" }}
+                          key={`${schedule[0]} - ${schedule[1]}`}
+                        >
+                          {`${schedule[0]} - ${schedule[1]}`}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </Row>
+      <Spacer y={1.0}></Spacer>
+      <Row justify="center" align="center">
+        <ConfirmButton
+          user={user}
+          tutorID={tutorID.currentKey}
+          schedule={schedule}
+          course={course}
+        />
+      </Row>
+    </div>
+  );
+}
+
+function ConfirmButton({ user, tutorID, schedule, course }) {
+  const [visible, setVisible] = useState(false);
+
+  function createAppointment() {
     const timings = Array.from(schedule).join(", ");
 
-    console.log(timings, );
+    console.log(timings);
     const startTime = new Date(timings.slice(0, 19));
     const endTime = new Date(timings.slice(22, timings.length));
 
@@ -128,105 +202,43 @@ function AppointmentCard({ user, course, allTutors }) {
       axios
         .post(`http://localhost:3001/appointments/create/`, {
           student_id: user.id,
-          tutor_id: tutor.id,
+          tutor_id: tutorID,
           app_start_time: startTime,
           app_end_time: endTime,
           course: course,
         })
         .then(function (response) {
-          console.log(response.data)
-          console.log(`Created appointment for ${response.data.appointment.course}!`);
+          console.log(response.data);
+          console.log(
+            `Created appointment for ${response.data.appointment.course}!`
+          );
         });
     } catch (e) {
       console.log("Error:", e);
     }
   }
 
-  const displayTutors = allTutors.map((tutor, index) => (
-    <div>
-      <Spacer y={1.0}></Spacer>
-      <Row justify="center" align="center">
-        <Card key={index} css={{ w: "80%", h: "100%" }}>
-          <Card.Header>
-            <Avatar
-              css={{ ml: "$8" }}
-              size="xl"
-              squared
-              text={tutor.first_name.charAt(0) + tutor.last_name.charAt(0)}
-            />
-            <Col css={{ pl: "$6" }}>
-              <Text size={15} b transform="uppercase">
-                {course}
-              </Text>
-              <Text h4>
-                Tutoring Appointment with{" "}
-                {tutor.first_name + " " + tutor.last_name}
-              </Text>
-              <Row>
-                <HiOutlineClock style={{size:"100px","margin-top":"11px"}} />
-                <Dropdown placement="bottom-left">
-                  <Dropdown.Button light css={{ tt: "capitalize" }}>
-                    {selectedValue}
-                  </Dropdown.Button>
-                  <Dropdown.Menu
-                    aria-label="Single selection schedules"
-                    disallowEmptySelection
-                    selectionMode="single"
-                    selectedKeys={schedule}
-                    onSelectionChange={setSchedule}
-                  >
-                    {tutor.tutor_schedules.map((schedule) => (
-                      <Dropdown.Item css={{ fontSize:"11px"}} key={`${schedule[0]} - ${schedule[1]}`}>
-                        {`${schedule[0]} - ${schedule[1]}`}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Row>
-              <Row justify="flex-end">
-                <Button
-                  size="sm"
-                  light
-                  color="success"
-                  onPress={() => setVisible(true)}
-                >
-                  Confirm Appointment
-                </Button>
-                <Modal
-                  closeButton
-                  open={visible}
-                  onClose={() => setVisible(false)}
-                >
-                  <Modal.Header>
-                    <Text h3>
-                      Are you sure you want to schedule this appointment?
-                    </Text>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Row justify="center">
-                      <Button
-                        auto
-                        color="success"
-                        onPress={() =>
-                          createAppointment(
-                            tutor
-                          )
-                        }
-                      >
-                        Confirm
-                      </Button>
-                    </Row>
-                  </Modal.Body>
-                </Modal>
-              </Row>
-            </Col>
-          </Card.Header>
-        </Card>
+  if (tutorID != null) {
+    return (
+      <Row justify="center">
+        <Button auto size="lg" onPress={() => setVisible(true)}>
+          Confirm Meeting
+        </Button>
+        <Modal closeButton open={visible} onClose={() => setVisible(false)}>
+          <Modal.Header>
+            <Text h3>Are you sure you want to schedule this appointment?</Text>
+          </Modal.Header>
+          <Modal.Body>
+            <Row justify="center">
+              <Button auto color="success" onPress={() => createAppointment()}>
+                Confirm
+              </Button>
+            </Row>
+          </Modal.Body>
+        </Modal>
       </Row>
-    </div>
-  ));
-
-  return displayTutors;
+    );
+  }
 }
 
 export default Appointments;
