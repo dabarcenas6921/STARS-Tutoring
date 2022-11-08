@@ -89,7 +89,7 @@ function GlobalNavbar({ user, setUser }) {
       <Navbar.Content enableCursorHighlight hideIn={"xs"}>
         <Navbar.Link href="/">Home</Navbar.Link>
         <Navbar.Link href="/schedules">Tutoring Schedule</Navbar.Link>
-        <Navbar.Link href="/contact">Contact Us</Navbar.Link>
+        <Navbar.Link href="https://www.fiu.edu/about/contact-us/index.html">Contact FIU</Navbar.Link>
       </Navbar.Content>
       <CheckUser></CheckUser>
     </Navbar>

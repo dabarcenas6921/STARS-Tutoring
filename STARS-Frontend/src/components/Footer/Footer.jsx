@@ -1,7 +1,8 @@
 import React from "react";
 import logoFooter from "../../assets/logo-footer.png";
 import "./Footer.css";
-import { Button, Card, Container, Input, Row, Spacer } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import { IoLogoFacebook, IoLogoInstagram, IoLogoTwitter, IoLogoYoutube } from "react-icons/io5";
 
 const Footer = () => {
   return (
@@ -14,48 +15,51 @@ const Footer = () => {
             </div>
 
             <p className="footer-text">
-              Duis a tempor magna. Maecenas ligula felis, imperdiet quis arcu
-              eget, blandit ultricies risus. Vivamus fringilla urna vel risus
-              congue accumsan.
+            Florida International University is a top public university that drives
+            real talent and innovation in Miami and globally. Today, FIU has two
+            campuses and multiple centers. FIU serves a diverse student body 
+            of more than 56,000 and 290,000 Panther alumni. U.S. News and
+            World Report places dozens of FIU programs among the best in the
+            nation, including international business at No. 2.
             </p>
 
             <div className="social-link">
-              <a href="#">
-                <ion-icon name="logo-facebook"></ion-icon>
+              <a href="https://www.facebook.com/floridainternational">
+                <IoLogoFacebook />
               </a>
-              <a href="#">
-                <ion-icon name="logo-instagram"></ion-icon>
+              <a href="https://www.instagram.com/fiuinstagram/">
+                <IoLogoInstagram />
               </a>
-              <a href="#">
-                <ion-icon name="logo-twitter"></ion-icon>
+              <a href="https://twitter.com/fiu">
+                <IoLogoTwitter />
               </a>
-              <a href="#">
-                <ion-icon name="logo-youtube"></ion-icon>
+              <a href="https://www.youtube.com/user/FloridaInternational">
+                <IoLogoYoutube />
               </a>
             </div>
           </div>
 
           <ul className="grid-item">
-            <h4 className="item-heading">Our Link</h4>
+            <h4 className="item-heading">Our Links</h4>
 
             <li className="list-item">
-              <a href="#home">Home</a>
+              <a href="https://www.fiu.edu/about/index.html">About Us</a>
             </li>
 
             <li className="list-item">
-              <a href="#about">About Us</a>
+              <a href="https://www.fiu.edu/admissions/index.html">Admissions</a>
             </li>
 
             <li className="list-item">
-              <a href="#course">Courses</a>
+              <a href="https://my.fiu.edu/">MyFIU</a>
             </li>
 
             <li className="list-item">
-              <a href="#blog">Blog</a>
+              <a href="https://news.fiu.edu/">FIU News</a>
             </li>
 
             <li className="list-item">
-              <a href="#contact">Contact Us</a>
+              <a href="https://www.fiu.edu/about/contact-us/index.html">Contact Us</a>
             </li>
           </ul>
 
