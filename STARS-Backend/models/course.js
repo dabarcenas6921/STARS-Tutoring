@@ -7,19 +7,6 @@ class Course {
       throw "No course provided!";
     }
 
-    const query = `SELECT tutors FROM courses WHERE course = $1`;
-    const result = await db.query(query, [course]);
-    const tutors = result.rows;
-
-    return tutors;
-  }
-
-  static async getTutors(course) {
-    //Function that returns the array of tutors that are teaching a course.
-    if (!course) {
-      throw "No course provided!";
-    }
-
     const query = `
     SELECT id, first_name, last_name, tutor_schedules
     FROM courses, schedules, users
